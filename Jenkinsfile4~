@@ -23,7 +23,7 @@ pipeline{
                                 echo "Deploy to Production Environment ...."
                                 timeout(time:5, unit:'DAYS'){
                                         input message: 'Approve production deployment....?'
-															}
+							   }
                                 build job: 'DeployToProduction'                                        
                                 post {
                                 success{
@@ -31,22 +31,19 @@ pipeline{
 					script {
 				                mail (to: 'email@gmail.com',
                         			subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
-                        			body: "Please visit ${env.BUILD_URL} for further information.",
-
-
-                  );
-                                        }
+                        			body: "Please visit ${env.BUILD_URL} for further information.",);
+                                               }
+                                       }
                                 failure{
                                         echo "Code deployed failed on Production"
 					script {
                 				mail (to: 'email@gmail.com',
 			                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
-                        			body: "Please visit ${env.BUILD_URL} for further information"
-                				);
-                                        }
-									}
-							}
+                        			body: "Please visit ${env.BUILD_URL} for further information");
+                                              }  
+					}
+				      }
 				}	
-	
-		}
-}
+			}
+   }		
+
