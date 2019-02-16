@@ -1,0 +1,45 @@
+pipeline{
+        agent any
+        stages{
+                stage('Build'){
+                        steps{
+                                sh 'mvn clean package'
+                        }
+                        post{
+                                success{
+                                        echo "Now archiving the package ...."
+                                        archiveArtifacts artifacts: '**/target/*war'
+                                }
+                        }
+                                }
+                stage('Deploy To Staging'){
+                        steps{
+                                echo "Deploy to Staging Environment ...."
+                                build job: 'DeployPackage1'
+                             }
+                                        }
+                stage('Deploy To Production'){
+                        steps{
+                                echo "Deploy to Production Environment ...."
+                                timeout(time:5, unit:'DAYS'){
+                                        input message: 'Approve production deployment....?'
+															}
+                                build job: 'DeployToProduction'                                        
+                                post {
+                                success{
+                                        echo "Code deployed to Production...."
+                                        }
+                                failure{
+                                        echo "Code deployed failed on Production"
+					script {
+                				mail (to: 'email@gmail.com',
+			                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+                        			body: "Please visit ${env.BUILD_URL} for further information"
+                				);
+                                        }
+									}
+							}
+				}	
+	
+		}
+}
