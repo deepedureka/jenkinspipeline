@@ -28,6 +28,13 @@ pipeline{
                                 post {
                                 success{
                                         echo "Code deployed to Production...."
+					script {
+				                mail (to: 'email@gmail.com',
+                        			subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
+                        			body: "Please visit ${env.BUILD_URL} for further information.",
+
+
+                  );
                                         }
                                 failure{
                                         echo "Code deployed failed on Production"
