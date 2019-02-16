@@ -24,7 +24,7 @@ pipeline{
                               //  timeout(time:5, unit:'DAYS'){
                                 //        input message: 'Approve production deployment....?'
 				//			   }
-                                build job: 'DeployToProduction'                                        
+                                //build job: 'DeployToProduction'                                        
                                 post {
                                 success{
                                         echo "Code deployed to Production...."
